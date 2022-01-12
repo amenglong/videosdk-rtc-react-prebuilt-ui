@@ -275,6 +275,29 @@ const App = () => {
       meetingId: paramKeys.meetingId,
       token: paramKeys.token,
     });
+    
+    window.addEventListener('message', function(event) {
+      if(!event.data || !event.data.action) return
+      const elems = document.querySelectorAll("audio");
+      switch(event.data.action) {
+        case  'mute':
+          [].forEach.call(elems, function(elem){
+            elem.muted=true;
+          });
+          break
+        case  'unmute':
+          [].forEach.call(elems, function(elem){
+            elem.muted=false;
+          });
+          break
+        case  'volume':
+          [].forEach.call(elems, function(elem){
+            elem.volume= +(event.data.payload.volume).toFixed(1);
+          });
+          break
+      }
+    });
+    
   }, [paramKeys]);
 
   const theme = useTheme();
